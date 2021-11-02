@@ -43,5 +43,5 @@ async def num_start_message(client: Bot, message: Message):
     MSG = "**BroadCast Completed !**\n"
     MSG += f"Succeed : {SUCCESS} Chats!"
     if TTL != SUCCESS:
-        MSG += f"\nFailed : {All-SUCCESS} Chats."
+        MSG += f"\nFailed : {len(All)-SUCCESS} Chats."
     await message.reply_text(MSG, quote=True)
