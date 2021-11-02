@@ -14,8 +14,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import time
 from pyrogram import Client, filters
 from pyrogram.types import Message
+from pyrogram.errors import FloodWait
 
 from bot import AUTH_CHANNEL, COMMM_AND_PRE_FIX, BROADCAST_COMMAND
 from bot.bot import Bot
@@ -34,14 +36,36 @@ async def num_start_message(client: Bot, message: Message):
     All = get_chats()
     TTL = len(All)
     SUCCESS = 0
+    FAILED = 0
+    sts = await message.reply('<i>Please Wait..</i>')
     for chat in All:
         try:
             await reply.copy(chat)
             SUCCESS += 1
+        except FloodWait as a:
+            time.sleep(a.x)
+            await reply.copy(chat)
+            SUCCESS += 1
         except Exception as e:
             print(e, chat)
-    MSG = "**BroadCast Completed !**\n"
-    MSG += f"Succeed : {SUCCESS} Chats!"
-    if TTL != SUCCESS:
-        MSG += f"\nFailed : {len(All)-SUCCESS} Chats."
-    await message.reply_text(MSG, quote=True)
+            FAILED += 1
+        try:
+            text = f"""<b><u>Broadcast Progress..</u>
+
+Total Users: {len(All)}
+Success: {SUCCESS}
+Failed: {FAILED}"""
+            await sts.edit(text)
+        except:
+            pass
+
+    MSG = f"""<b><u>BroadCast Completed</u>
+
+Total Users: {len(All)}
+Success: {SUCCESS}
+Failed: {FAILED}"""
+    try:
+        await sts.edit(MSG)
+    except FloodWait as a:
+        time.sleep(a.x)
+        await sts.edit(MSG)
