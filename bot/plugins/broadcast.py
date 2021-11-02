@@ -29,7 +29,7 @@ from bot.sql.users_sql import get_chats
     & uszkhvis_chats_ahndler([AUTH_CHANNEL])
 )
 async def num_start_users(client: Bot, message: Message):
-    await message.reply(f'<code>{len(get_chats())}</code> users are using this bot')
+    await message.reply(f'🤖 <code>{len(get_chats())}</code> <b>Users Are Using This Bot</b> 🤒')
 
 @Bot.on_message(
     filters.command(BROADCAST_COMMAND, COMMM_AND_PRE_FIX)
@@ -37,13 +37,13 @@ async def num_start_users(client: Bot, message: Message):
 )
 async def num_start_message(client: Bot, message: Message):
     if not message.reply_to_message:
-        return await message.reply_text("Reply to Message..", quote=True)
+        return await message.reply_text("<b>Reply to Message..</b>", quote=True)
     reply = message.reply_to_message
     All = get_chats()
     TTL = len(All)
     SUCCESS = 0
     FAILED = 0
-    sts = await message.reply('<i>Please Wait..</i>')
+    sts = await message.reply('<b>Please Wait..</b>')
     for chat in All:
         try:
             await reply.copy(chat)
@@ -56,20 +56,20 @@ async def num_start_message(client: Bot, message: Message):
             print(e, chat)
             FAILED += 1
         try:
-            text = f"""<b><u>Broadcast Progress..</u>
+            text = f"""<b><u>📡 Broadcast Progress...</u></b>
 
-Total Users: {len(All)}
-Success: {SUCCESS}
-Failed: {FAILED}"""
+Total Users : {len(All)}
+Success : {SUCCESS}
+Failed : {FAILED}"""
             await sts.edit(text)
         except:
             pass
 
-    MSG = f"""<b><u>BroadCast Completed</u>
+    MSG = f"""<b><u>📡 BroadCast Completed 🤞</u></b>
 
-Total Users: {len(All)}
-Success: {SUCCESS}
-Failed: {FAILED}"""
+Total Users : {len(All)}
+Success : {SUCCESS}
+Failed : {FAILED}"""
     try:
         await sts.edit(MSG)
     except FloodWait as a:
