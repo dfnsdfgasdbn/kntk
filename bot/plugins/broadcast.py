@@ -24,6 +24,12 @@ from bot.bot import Bot
 from bot.hf.flifi import uszkhvis_chats_ahndler
 from bot.sql.users_sql import get_chats
 
+@Bot.on_message(
+    filters.command('users')
+    & uszkhvis_chats_ahndler([AUTH_CHANNEL])
+)
+async def num_start_users(client: Bot, message: Message):
+    await message.reply(f'<code>{len(get_chats())}</code> users are using this bot')
 
 @Bot.on_message(
     filters.command(BROADCAST_COMMAND, COMMM_AND_PRE_FIX)
